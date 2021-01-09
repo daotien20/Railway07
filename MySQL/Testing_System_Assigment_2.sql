@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS question (
 	creat_date		DATE,
 	FOREIGN KEY (category_id)	REFERENCES category_question(category_id),
 	FOREIGN KEY (type_id)		REFERENCES type_question (type_id),
-	FOREIGN KEY (creator_id) REFERENCES `account` (account_id) 
+	FOREIGN KEY (creator_id) 	REFERENCES `account` (account_id) 
 );
 
 DROP TABLE IF EXISTS answer;
@@ -95,5 +95,7 @@ DROP TABLE IF EXISTS exam_question;
 CREATE TABLE IF NOT EXISTS exam_question (
 	exam_id			SMALLINT UNSIGNED,
 	question_id		SMALLINT UNSIGNED,
-    PRIMARY KEY (exam_id,question_id)
+    PRIMARY KEY (exam_id,question_id),
+    FOREIGN KEY (exam_id)		REFERENCES exam (exam_id),
+    FOREIGN KEY (question_id)	REFERENCES question (question_id)
 );
