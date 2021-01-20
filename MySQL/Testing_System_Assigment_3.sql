@@ -4,7 +4,7 @@ DROP DATABASE IF EXISTS Testing_System_Assignment_3;
 CREATE DATABASE Testing_System_Assignment_3;
 USE Testing_System_Assignment_3;
 
-/*============================== CREATE TABLE=== =======================================*/
+/*============================== CREATE TABLE===========================================*/
 /*======================================================================================*/
 DROP TABLE IF EXISTS department;
 CREATE TABLE IF NOT EXISTS department (
@@ -134,8 +134,9 @@ VALUES					('Dev'			),
 -- Add data account
 INSERT INTO `account`	(email							, user_name		, full_name			, department_id	, position_id	, create_date	)
 VALUES					('nguyenvana@gmail.com'			, 'nva123'		, 'Nguyen Van A'	, 4				, 7				, '2017-04-21'	),
-						('leumacthanh@gmail.com'		, 'lmt2512'		, 'Leu Mac Thanh'	, 3				, 9				, '2020-09-25'	),
-                        ('vankieunguyen12@gmail.com'	, 'vankieu'		, 'Nguyen Kieu Van'	, 1				, 2				, '2018-05-14'	),
+						('leumacthanh@gmail.com'		, 'lmt2512'		, 'Leuu Mac Thanh'	, 3				, 9				, '2020-09-25'	),
+                        ('vankieunguyen12@gmail.com'	, 'vankieu'		, 'Nguyen Kieu Van1', 1				, 2				, '2018-05-14'	),
+                        ('vankieunguyen2@gmail.com'		, 'vankeu'		, 'Nguyen Kieu Van2', 1				, 2				, '2018-05-14'	),
                         ('hainam23@gmail.com'			, 'hn23'		, 'Do Hai Nam'		, 2				, 1				, '2015-12-12'	),
                         ('dolphinca@gmail.com'			, 'dolphin'		, 'Ca Dolphin'		, 1				, 7				, '2016-11-23'	),
                         ('nguyenvan@gmail.com'			, 'nvan_'		, 'Nguyen Van'		, 3				, 9				, '2017-07-21'	),
@@ -191,14 +192,14 @@ VALUES 							('Java'			),
 -- Add data question
 INSERT INTO question	(content					, category_id	, type_id	, creator_id	, create_date	)
 VALUES					('Câu hỏi về Java'			, 1				, 1			, 3				, '2019-01-02'	),
-                        ('Question about .NET'		, 2				, 1			, 3				, '2019-10-07'	),
-                        ('Question about NodeJS'	, 3				, 1			, 3				, '2019-12-03'	),
+                        ('Question about .NET'		, 2				, 2			, 3				, '2019-10-07'	),
+                        ('Question about NodeJS'	, 3				, 2			, 3				, '2019-12-03'	),
 						('Question about SQL'		, 4				, 1			, 3				, '2020-01-02'	),
 						('Câu hỏi về Postman'		, 5				, 1			, 3				, '2020-05-06'	),
                         ('Question about Ruby'		, 6				, 1			, 3				, '2018-01-02'	),
-                        ('Question about Python'	, 7				, 1			, 3				, '2017-11-02'	),
+                        ('Question about Python'	, 7				, 2			, 3				, '2017-11-02'	),
                         ('Câu hỏi về C++'			, 8				, 1			, 3				, '2017-05-22'	),
-						('Question about C#'		, 9				, 1			, 3				, '2019-09-12'	),
+						('Question about C#'		, 9				, 2			, 3				, '2019-09-12'	),
 						('Question about PHP'		, 10			, 1			, 3				, '2019-01-23'	);
                         
 -- Add data answer
@@ -243,93 +244,115 @@ VALUES						(1			, 5				),
 
 /*===================== Bài tập của Testing_System_Assignment_3 ========================*/
 /*======================================================================================*/
--- Q2:
+-- Q2: lấy ra tất cả các phòng ban
 SELECT * 
 FROM department;
 
--- Q3:
+-- Q3: lấy ra id của phòng ban "Sale"
 SELECT department_id
 FROM department
 WHERE department_name = 'Sale';
 
--- Q4 - cách 1: use the MAX() function
-SELECT *
+-- Q4:lấy ra thông tin account có full name dài nhất
+SELECT *, CHAR_LENGTH(full_name) AS characterAmount
 FROM `account`
-WHERE LENGTH(full_name) = (
-	SELECT MAX(LENGTH(full_name))
+WHERE CHAR_LENGTH(full_name) = (
+	SELECT CHAR_LENGTH(full_name)
     FROM`account`
+    GROUP BY full_name
+    ORDER BY CHAR_LENGTH(full_name) DESC
+    LIMIT 1
 	);
-    
--- Q4 - cách 2: sort the table
-SELECT *
-FROM `account`
-ORDER BY LENGTH(full_name) DESC
-LIMIT 1;
 
--- Q5:
-SELECT *
-FROM `account`
-WHERE department_id = 3
-ORDER BY LENGTH(full_name) DESC
-LIMIT 1;
+-- B1. thống kê mỗi tên có bao nhiêu ký tự 
+SELECT *, CHAR_LENGTH(full_name) AS characterAmount
+FROM `account`;
 
--- Q6:
+-- B2. Fix cứng độ dài ký tự lớn nhất muốn tìm
+SELECT *, CHAR_LENGTH(full_name) AS characterAmount
+FROM `account`
+WHERE CHAR_LENGTH(full_name) = 16;
+
+-- B3. Viết câu lệnh để tìm ra số '16' ở B2
+SELECT MAX(CHAR_LENGTH(full_name))
+FROM`account`;
+
+-- DONE →
+SELECT *, CHAR_LENGTH(full_name) AS characterAmount
+FROM `account`
+WHERE CHAR_LENGTH(full_name) = (
+	SELECT MAX(CHAR_LENGTH(full_name))
+	FROM`account`
+);
+
+-- Q5: lấy ra thông tin account có full name dài nhất và thuộc phòng ban có  id = 3
+SELECT *,  LENGTH(full_name)
+FROM `account`
+WHERE department_id = 3	AND CHAR_LENGTH(full_name) = (
+	SELECT MAX(CHAR_LENGTH(full_name))
+	FROM `account`
+	WHERE department_id = 3)
+;
+
+-- Q6: lấy ra tên group đã tham gia trước ngày 20/12/2019
 SELECT group_name 
 FROM `group`
 WHERE create_date < '2019-12-20';
 
--- Q7:
+-- Q7: lấy ra ID của question có >= 4 câu trả lời
 SELECT question_id, COUNT(*) AS 'Sum of each question_id'
 FROM answer
 GROUP BY question_id
 HAVING COUNT(*) >= 4;
 
--- Q8:
+-- Q8: lấy ra các mã đề thi có thời gian thi >= 60 phút và được tạo trước ngày 20/12/2019
 SELECT `code`
 FROM exam
 WHERE duration >= 60 && create_date < '2019-12-20';
 
- -- Q9:
+ -- Q9: lấy ra 5 group được tạo gần đây nhất
 SELECT create_date
 FROM `group`
 ORDER BY create_date DESC
 LIMIT 5;
  
- -- Q10:
-SELECT department_id, COUNT(department_id) 
+ -- Q10: đếm số nhân viên thuộc department có id =2
+SELECT department_id, COUNT(*)
 FROM `account`
 WHERE department_id = 2
 GROUP BY department_id;
 
--- Q11:
+-- Q11: lấy ra nhân viên có tên bắt đầu bằng chữ "D" và kết thúc bằng chữ "o" 
 SELECT *
 FROM `account`
 WHERE full_name LIKE 'D%o';
     
--- Q12:
+-- Q12: xóa tất cả các exam được tạo trước ngày 20/12/2019
 SET SQL_SAFE_UPDATES = 0;
 SET FOREIGN_KEY_CHECKS = 0;
 DELETE
 FROM exam
 WHERE create_date < '2019-12-20';
                         
--- Q13:
+-- Q13: xóa tất cả các question có nội dung bắt đầu bằng từ "câu hỏi"
 DELETE
 FROM question
 WHERE content LIKE 'câu hỏi%';
 
--- Q14:
+-- Q14: update thông tin của account có id = 5 thành tên "Nguyễn Bá Lộc" và email thành loc.nguyenba@vti.com.vn
 UPDATE `account`
 SET	full_name	= 'Nguyễn Bá Lộc',
 	email		= 'loc.nguyenba@vti.com.vn'
 WHERE account_id = 5;
 
--- Q15:
-UPDATE `group`
-SET	creator_id = 5
-WHERE group_id = 4;
+-- Q15: update account có id =5 sẽ thuộc group có id = 4
+SET SQL_SAFE_UPDATES = 0;
+SET FOREIGN_KEY_CHECKS = 0;
+UPDATE group_account
+SET	group_id = 4
+WHERE account_id = 5;
 
-
+SELECT * FROM group_account;
                         
                         
                         
