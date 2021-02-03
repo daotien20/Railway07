@@ -52,7 +52,7 @@ public class ProgramQLTV {
 				}else if(x == 2) {
 					while(true) {
 						qltv.deleteTL();
-						System.out.println("Bạn có muốn tìm kiếm tiếp không?");
+						System.out.println("Bạn có muốn xóa tài liệu tiếp không?");
 						System.out.println("1: Có; 2: Không");
 						int y = scanner.nextInt();
 						if (y == 1) {
@@ -88,7 +88,7 @@ public class ProgramQLTV {
 				}else if(x == 4) {
 					while(true) {
 						qltv.searchTL();
-						System.out.println("Bạn có muốn xóa thêm cán bộ không?");
+						System.out.println("Bạn có muốn tìm kiếm tiếp không?");
 						System.out.println("1: Có; 2: Không");
 						int y = scanner.nextInt();
 						if (y == 1) {

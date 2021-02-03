@@ -80,9 +80,14 @@ public class QLTV {
 		int maTL = scanner.nextInt();
 		
 		for (TaiLieu taiLieu: cacTaiLieu) {
-			if(maTL == taiLieu.getMaTaiLieu())
-			System.out.println("Done!");
-			taiLieu.getInforTL();
+			
+			if(maTL == taiLieu.getMaTaiLieu()) {
+				System.out.println("Done!");
+				taiLieu.getInforTL();
+			}else {
+				System.out.println("Không có tài liệu cần tìm");
+				break;
+			}
 		}
 	}
 	

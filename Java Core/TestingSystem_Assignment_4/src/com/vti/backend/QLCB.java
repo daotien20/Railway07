@@ -109,9 +109,13 @@ public class QLCB {
 		String fullName = scanner.nextLine();
 		
 		for (CanBo canBo: danhSachCB) {
-			if(fullName.equals(canBo.getFullName()))
-			System.out.println("Done!");
-			canBo.getInfor();
+			if(fullName.equals(canBo.getFullName())) {
+				System.out.println("Done!");
+				canBo.getInfor();
+			}else {
+				System.out.println("Không có cán bộ cần tìm");
+				break;
+			}
 		}
 	}
 	
