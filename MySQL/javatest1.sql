@@ -9,6 +9,7 @@ WHERE department_id = 5;
 -- SET position_name = "Dev"
 -- WHERE position_id = 5;
 
+SELECT * FROM position;	
 SET FOREIGN_KEY_CHECKS = 0;
 DELETE 
 FROM position
