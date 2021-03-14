@@ -30,3 +30,4 @@ CREATE PROCEDURE sp_delete_department (IN in_dept_no INT)
         WHERE department_id = in_dept_no;
     END $$
 DELIMITER ;
+
